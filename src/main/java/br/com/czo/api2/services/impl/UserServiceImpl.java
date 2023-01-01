@@ -4,6 +4,7 @@ import br.com.czo.api2.domain.User;
 import br.com.czo.api2.domain.dto.UserDTO;
 import br.com.czo.api2.repositories.UserRepository;
 import br.com.czo.api2.services.UserService;
+import br.com.czo.api2.services.exceptions.DataIntegratyViolationException;
 import br.com.czo.api2.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
+    }
+
+    //Metodo para verificar se o Email já existe e retornar mensagem ao usuario.
+    private void findByEmail(UserDTO obj){
+        Optional<User> user = repository.findByEmail(obj.getEmail());
+        if(user.isPresent()) {
+            throw new DataIntegratyViolationException("Email já cadastrado!");
+        }
     }
 }
