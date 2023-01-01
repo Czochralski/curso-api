@@ -1,5 +1,6 @@
 package br.com.czo.api2.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,5 +18,6 @@ public class UserDTO {
     private Integer id;
     private String name;
     private String email;
+    @JsonIgnore
     private String password;
 }
