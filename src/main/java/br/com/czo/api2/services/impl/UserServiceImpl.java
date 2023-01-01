@@ -25,29 +25,24 @@ public class UserServiceImpl implements UserService {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado"));
     }
-
     public List<User> findAll(){
         return repository.findAll();
     }
-
     @Override
     public User create(UserDTO obj) {
         findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
     }
-
     @Override
     public User update(UserDTO obj) {
         findByEmail(obj);
         return repository.save(mapper.map(obj, User.class));
     }
-
     @Override
     public void delete(Integer id) {
         findById(id);
         repository.deleteById(id);
     }
-
     //Metodo para verificar se o Email já existe e retornar mensagem ao usuario.
     private void findByEmail(UserDTO obj){
         Optional<User> user = repository.findByEmail(obj.getEmail());
