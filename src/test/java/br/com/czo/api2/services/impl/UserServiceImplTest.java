@@ -29,16 +29,15 @@ class UserServiceImplTest {
     public static final String NAME = "Bruno";
     public static final String EMAIL = "bruno@gmail.com";
     public static final String PASSWORD = "123";
+    private User user;
+    private UserDTO userDTO;
+    private Optional<User> optionalUser;
     @InjectMocks
     private UserServiceImpl service;
     @Mock
     private UserRepository repository;
     @Mock
     private ModelMapper mapper;
-    private User user;
-    private UserDTO userDTO;
-    private Optional<User> optionalUser;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
