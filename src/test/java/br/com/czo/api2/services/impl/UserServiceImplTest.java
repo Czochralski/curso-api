@@ -3,6 +3,7 @@ package br.com.czo.api2.services.impl;
 import br.com.czo.api2.domain.User;
 import br.com.czo.api2.domain.dto.UserDTO;
 import br.com.czo.api2.repositories.UserRepository;
+import br.com.czo.api2.services.exceptions.DataIntegratyViolationException;
 import br.com.czo.api2.services.exceptions.ObjectNotFoundException;
 import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -98,6 +99,19 @@ class UserServiceImplTest {
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(PASSWORD, response.getPassword());
+    }
+
+    @Test
+    void whenCreateNewUserThenReturnAnDataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUser);
+
+        try{
+            optionalUser.get().setId(2);
+            service.create(userDTO);
+        }catch (Exception ex){
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("Email já cadastrado!", ex.getMessage());
+        }
     }
 
     @Test
