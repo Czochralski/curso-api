@@ -4,6 +4,7 @@ import br.com.czo.api2.domain.User;
 import br.com.czo.api2.domain.dto.UserDTO;
 import br.com.czo.api2.repositories.UserRepository;
 import br.com.czo.api2.services.exceptions.ObjectNotFoundException;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +71,19 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnAListOfUsers() {
+        when(repository.findAll()).thenReturn(List.of(user));
+
+        List<User> response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(User.class, response.get(0).getClass());
+
+        assertEquals(ID, response.get(0).getId());
+        assertEquals(NAME, response.get(0).getName());
+        assertEquals(EMAIL, response.get(0).getEmail());
+        assertEquals(PASSWORD, response.get(0).getPassword());
     }
 
     @Test
